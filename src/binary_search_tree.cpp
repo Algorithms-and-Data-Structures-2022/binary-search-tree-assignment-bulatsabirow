@@ -78,38 +78,32 @@ namespace assignment {
   }
 
   bool BinarySearchTree::remove(int key, Node*& node) {
-    /*
-    if (node == nullptr){
-      return false;
+  if (node == nullptr){
+    return false;
+  }
+  if (key == node->key){
+    if (node->left != nullptr && node->right != nullptr){
+      Node *min_node = find_min(node->right);
+      node->key = min_node->key;
+      node->value = min_node->value;
+      return remove(min_node->key, node->right);
     }
-    if (key > node->key){
-      remove(key, node->left);
+    if (node->right == nullptr && node->left != nullptr){
+      Node *left_child = node->left;
+      delete node;
+      node = left_child;
+      return true;
     }
-    else if(key < node->key){
-      remove(key, node->right);
-    }
-    else{
-      if (node->left == nullptr && node->right == nullptr){
-        node = nullptr;
-        return true;
-      }
-      else if (node->right == nullptr){
-        node = node->left;
-        return true;
-      }
-      else if (node->left == nullptr){
-        node = node->right;
-        return true;
-      }
-      else{
-        Node *tmp = find_min(node->right);
-        node->key = tmp->key;
-        node->value = tmp->value;
-        remove(tmp->key, tmp);
-        return true;
-      }
-    }
-     */
+
+    Node *right_node = node->right;
+    delete node;
+    node = right_node;
+    return true;
+  }
+  if (key < node->key){
+    return remove(key, node->left);
+  }
+  return remove(key, node->right);
   }
 
   void BinarySearchTree::clear(Node* node) {
